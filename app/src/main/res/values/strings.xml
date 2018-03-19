@@ -3,4 +3,7 @@
     <string name="menu_scan_cycle">Scan Cycle</string>
     <string name="menu_find_cycle">Find Cycle</string>
     <string name="menu_profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
