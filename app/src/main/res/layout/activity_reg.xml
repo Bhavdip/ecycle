@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ecycle.rajasthan.ecycle.screens.RegActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:layout_height="match_parent"
+    >
+
+    <Button
+        android:id="@+id/bReg"
+        android:layout_width="match_parent"
+        android:text="Bhamashah ID"
+        android:drawableLeft="@drawable/ic_logo_bhamashah"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/aReg"
+        android:layout_width="match_parent"
+        android:text="Aadhaar ID (UID)"
+        android:drawableLeft="@drawable/ic_logo_adhar"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/fReg"
+        android:layout_width="match_parent"
+        android:text="Facebook"
+        android:paddingLeft="24dp"
+        android:drawableLeft="@drawable/ic_facebook"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/gReg"
+        android:layout_width="match_parent"
+        android:text="Google"
+        android:paddingLeft="24dp"
+        android:drawableLeft="@drawable/ic_search"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+</layout>

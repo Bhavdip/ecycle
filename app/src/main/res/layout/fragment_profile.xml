@@ -1,0 +1,159 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ecycle.rajasthan.ecycle.screens.ProfileFragment">
+    <ScrollView
+        android:fillViewport="true"
+        android:background="#E7E7E7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:contentPadding="10dp"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:src="@drawable/profile_234"
+        app:civ_border_width="1dp"
+        app:civ_border_color="#FF000000"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:textColor="@color/primary_text"
+                android:layout_height="match_parent"
+                android:text="Sanjar Imam" />
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:textColor="@color/secondary_text"
+                android:layout_height="match_parent"
+                android:text="SSO: SANJAR1234" />
+        </LinearLayout>
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:contentPadding="10dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="bottom"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:layout_height="wrap_content"
+                android:text="One Trip " />
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/primary_text"
+                android:layout_height="wrap_content"
+                android:text="Membership " />
+        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:textColor="@color/secondary_text"
+                android:layout_height="match_parent"
+                android:text="Plan ending soons" />
+            <Button
+                android:id="@+id/changeSubscription"
+                android:layout_width="match_parent"
+                android:text="Change Subscription Plan"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColor="@color/primary_text"
+                android:layout_height="match_parent"
+                android:text="Settings" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColor="@color/primary_text"
+                android:layout_height="match_parent"
+                android:text="FAQ" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColor="@color/primary_text"
+                android:layout_height="match_parent"
+                android:text="Help" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:padding="10dp"
+                android:textColor="@color/primary_text"
+                android:layout_height="match_parent"
+                android:text="Contact Us" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+    </ScrollView>
+</layout>
