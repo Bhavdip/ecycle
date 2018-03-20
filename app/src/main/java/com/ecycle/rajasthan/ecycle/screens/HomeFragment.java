@@ -1,9 +1,13 @@
 package com.ecycle.rajasthan.ecycle.screens;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.ecycle.rajasthan.ecycle.R;
 import com.ecycle.rajasthan.ecycle.databinding.FragmentHomeBinding;
 import com.google.android.gms.common.ConnectionResult;
@@ -96,15 +99,15 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
         MapsInitializer.initialize(getContext());
         if (!isInDetails) {
             //education
-            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_mortarboard)).position(new LatLng(26.879660, 75.812482)).title("Rajasthan university"));
+            optionsList.add(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_school)).position(new LatLng(26.879660, 75.812482)).title("Rajasthan university"));
             //place
-            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_store)).position(new LatLng(26.9115458, 75.8070547)).title("Hawa Mahal"));
+            optionsList.add(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_store)).position(new LatLng(26.9115458, 75.8070547)).title("Hawa Mahal"));
             //goverment
-            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_govement)).position(new LatLng(26.9047202, 75.797173)).title("Department of Information Technology & Communication"));
+            optionsList.add(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_goverment)).position(new LatLng(26.9047202, 75.797173)).title("Department of Information Technology & Communication"));
             //palce
-            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_store)).position(new LatLng(26.9534306, 75.8110557)).title("Jal Mahal"));
-            //place
-            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_store)).position(new LatLng(26.8945295, 75.8263396)).title("Raja Park"));
+            optionsList.add(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_store)).position(new LatLng(26.9534306, 75.8110557)).title("Jal Mahal"));
+            //placeandroid:fillColor="@color/colorPrimary"
+            optionsList.add(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_store)).position(new LatLng(26.8945295, 75.8263396)).title("Raja Park"));
         } else {
             mPolygonOptions = new PolygonOptions();
             latlanList.add(new LatLng(26.891643, 75.814846));
@@ -121,16 +124,13 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
             latlanList.add(new LatLng(26.889893, 75.819247));
             latlanList.add(new LatLng(26.890332, 75.817787));
             latlanList.add(new LatLng(26.891643, 75.814846));
+
             mPolygonOptions.strokeColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))
                     .fillColor(ContextCompat.getColor(getContext(), R.color.colorAqua))
                     .strokeWidth(4);
             mPolygonOptions.addAll(latlanList);
         }
 
-    }
-
-    private BitmapDescriptor getDescriptor(int resourceId) {
-        return BitmapDescriptorFactory.fromResource(resourceId);
     }
 
     private void spreadPlaceOnMap() {
@@ -169,7 +169,27 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
             builder.include(new LatLng(minLat, minLon));
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 48));
         }
+    }
 
+    private void drawBicycleOnMap() {
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.887663, 75.818671)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.885659, 75.816183)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.885672, 75.816218)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.886503, 75.823829)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.887398, 75.821344)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.889427, 75.817926)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.884156, 75.823697)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.884115, 75.822545)));
+        mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_bicycle)).position(new LatLng(26.882969, 75.822980)));
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Nullable
@@ -323,6 +343,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
 
         if (isInDetails) {
             drawAPolygonOnMap();
+            drawBicycleOnMap();
         }
 
     }
