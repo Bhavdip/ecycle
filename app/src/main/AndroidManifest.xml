@@ -23,7 +23,6 @@
         <activity
             android:name=".screens.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".screens.MainActivity" />
         <activity android:name=".screens.DetailsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
