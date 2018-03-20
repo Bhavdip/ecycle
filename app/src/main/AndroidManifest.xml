@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <application
         android:name=".EcycleApp"
         android:allowBackup="true"
@@ -33,6 +32,15 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".screens.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".screens.RegActivity"
+            android:label="@string/title_activity_register"/>
+
     </application>
 
 </manifest>
