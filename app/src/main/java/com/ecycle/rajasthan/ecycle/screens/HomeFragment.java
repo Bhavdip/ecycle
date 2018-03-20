@@ -31,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
@@ -122,7 +123,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
             latlanList.add(new LatLng(26.891643, 75.814846));
             mPolygonOptions.strokeColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))
                     .fillColor(ContextCompat.getColor(getContext(), R.color.colorAqua))
-                    .strokeWidth(2);
+                    .strokeWidth(4);
             mPolygonOptions.addAll(latlanList);
         }
 
@@ -137,8 +138,36 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
             for (MarkerOptions item : optionsList) {
                 mGoogleMap.addMarker(item);
             }
-        } else {
+        }
+    }
+
+    private void drawAPolygonOnMap() {
+        boolean hasPoints = false;
+        Double maxLat = null, minLat = null, minLon = null, maxLon = null;
+        if (mGoogleMap != null) {
             mGoogleMap.addPolygon(mPolygonOptions);
+        }
+
+        if (mPolygonOptions != null && mPolygonOptions.getPoints() != null) {
+            List<LatLng> pts = mPolygonOptions.getPoints();
+            for (LatLng coordinate : pts) {
+                // Find out the maximum and minimum latitudes & longitudes
+                // Latitude
+                maxLat = maxLat != null ? Math.max(coordinate.latitude, maxLat) : coordinate.latitude;
+                minLat = minLat != null ? Math.min(coordinate.latitude, minLat) : coordinate.latitude;
+
+                // Longitude
+                maxLon = maxLon != null ? Math.max(coordinate.longitude, maxLon) : coordinate.longitude;
+                minLon = minLon != null ? Math.min(coordinate.longitude, minLon) : coordinate.longitude;
+                hasPoints = true;
+            }
+        }
+
+        if (hasPoints) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(new LatLng(maxLat, maxLon));
+            builder.include(new LatLng(minLat, minLon));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 48));
         }
 
     }
@@ -235,6 +264,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "onConnected()");
         getLastKnownLocation();
+
     }
 
     @Override
@@ -268,7 +298,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     // Get last known location
     private void getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation()");
-        if (lastKnowLocation != null) {
+        if (lastKnowLocation != null && !isInDetails) {
             LatLng newLatLng = new LatLng(lastKnowLocation.getLatitude(), lastKnowLocation.getLongitude());
             // Position the map's camera at the location of the marker.
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng,
@@ -277,7 +307,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
 
         if (checkPermission()) {
             Location nwLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (nwLocation != null) {
+            if (nwLocation != null && !isInDetails) {
                 if (lastKnowLocation == null) {
                     lastKnowLocation = nwLocation;
                     LatLng newLatLng = new LatLng(lastKnowLocation.getLatitude(), lastKnowLocation.getLongitude());
@@ -290,6 +320,11 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
             }
 
         } else askPermission();
+
+        if (isInDetails) {
+            drawAPolygonOnMap();
+        }
+
     }
 
     // Start location Updates
@@ -307,7 +342,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     @Override
     public void onLocationChanged(Location location) {
         lastKnowLocation = location;
-        if (mGoogleMap != null) {
+        if (mGoogleMap != null && !isInDetails) {
             LatLng newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
             // Position the map's camera at the location of the marker.
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng,
