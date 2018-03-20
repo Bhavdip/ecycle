@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.MainActivity"
+        <activity
+            android:name=".screens.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -38,10 +39,11 @@
             android:name=".screens.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".screens.RegActivity"
-            android:label="@string/title_activity_register"/>
-
+        <activity
+            android:name=".screens.RegActivity"
+            android:label="@string/title_activity_register" />
+        <activity android:name=".screens.SubcriptionActivity"
+            android:label="@string/subscription_plans"/>
     </application>
 
 </manifest>

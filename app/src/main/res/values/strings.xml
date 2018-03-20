@@ -9,4 +9,19 @@
     <string name="btn_complete">Complete</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">Register</string>
+
+    <string name="title_1">Cool card</string>
+    <string name="title_2">Ok card</string>
+    <string name="title_3">Bad card</string>
+    <string name="title_4">Ugly card</string>
+
+    <string name="text_1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam eget ligula eu lectus lobortis condimentum.</string>
+    <string name="subscription_plans">Subcription Plans</string>
+    <string name="btn_buy">Buy</string>
+    <string name="title_education">Educations</string>
+    <string name="title_tourist">Tourist</string>
+    <string name="title_premium">Premium</string>
+    <string name="text_edu" >Duration: 30 days\nSubscription Plan: 500</string>
+    <string name="text_tourist" >Duration: 1 day\nSubscription Plan: 10</string>
+    <string name="text_pr" >Custom subscription plan for Government or any private building.</string>
 </resources>

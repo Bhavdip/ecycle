@@ -92,6 +92,7 @@
                 android:layout_height="match_parent"
                 android:text="Plan ending soons" />
             <Button
+                android:id="@+id/changeSubscription"
                 android:layout_width="match_parent"
                 android:text="Change Subscription Plan"
                 android:layout_height="wrap_content" />
