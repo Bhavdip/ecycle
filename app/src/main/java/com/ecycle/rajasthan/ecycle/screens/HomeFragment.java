@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.ecycle.rajasthan.ecycle.R;
 import com.ecycle.rajasthan.ecycle.databinding.FragmentHomeBinding;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     private static final int REQUEST_PERMISSIONS = 20;
     private FragmentHomeBinding mHomeBinding;
     private GoogleMap mGoogleMap;
+    private GoogleApiClient googleApiClient;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -98,5 +100,10 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
         LatLng sydney = new LatLng(-34, 151);
         mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+
+    private void createGoogleApi() {
+
     }
 }
