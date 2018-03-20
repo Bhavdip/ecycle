@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mBinding.bottomNavigation.setOnNavigationItemSelectedListener(this);
+        mBinding.bottomNavigation.setSelectedItemId(R.id.action_find_cycle);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements
                 setScanFragment();
                 return true;
             case R.id.action_find_cycle:
-                setFragment(new HomeFragment());
+                setFragment(HomeFragment.getInstance(false));
                 return true;
             case R.id.action_profile:
                 setFragment(new ProfileFragment());
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
     private void setFragment(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.contentLayout,fragment);
+        transaction.replace(R.id.contentLayout, fragment);
         transaction.commit();
     }
 
@@ -71,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void setScanFragment() {
-        if(isScanCompleted){
+        if (isScanCompleted) {
             setFragment(new BlankFragment());
-        }else {
+        } else {
 //            setFragment(new ScanFragment());
             BarcodeCapture mCapture = new BarcodeCapture();
             mCapture.setRetrieval(this);
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRetrievedFailed(String reason) {
-        Toast.makeText(this,reason,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
     }
 
     @Override

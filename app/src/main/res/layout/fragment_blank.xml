@@ -10,14 +10,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:text="You got a new ride. Enjoy your ride"
         android:textColor="@color/primary_text"
-        android:text="You got a new ride. Enjoy your ride" />
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/completeRide"
-        android:text="@string/btn_complete"
-        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_complete" />
 </LinearLayout>
