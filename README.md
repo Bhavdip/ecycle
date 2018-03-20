@@ -17,4 +17,4 @@ Business plan can be customisable as per targeted audiance
 ![How to Use](./screenshots/Business-Model.png)
 
 ### Release
-This release includes on prototype version of our project. You can download apk ![here](./releases/ecycle-app-debug.apk). 
+This release includes on prototype version of our project. You can download apk [here](https://github.com/Bhavdip/ecycle/raw/master/releases/ecycle-app-debug.apk). 
