@@ -8,4 +8,5 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="divider_color">#BDBDBD</color>
+    <color name="colorAqua">#4D303F9F</color>
 </resources>

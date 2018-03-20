@@ -55,7 +55,7 @@ public class ScanFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
         mScannerView = new ZXingScannerView(getActivity());
-        if(state != null) {
+        if (state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
             mAutoFocus = state.getBoolean(AUTO_FOCUS_STATE, true);
             mSelectedIndices = state.getIntegerArrayList(SELECTED_FORMATS);
@@ -105,25 +105,25 @@ public class ScanFragment extends Fragment implements
 
     public void showMessageDialog(String message) {
         Log.d("SCAN", "showMessageDialog: " + message);
-        if(mListener!=null){
+        if (mListener != null) {
             mListener.onScanCompleted(message);
         }
-   }
+    }
 
 
     public void setupFormats() {
         List<BarcodeFormat> formats = new ArrayList<BarcodeFormat>();
-        if(mSelectedIndices == null || mSelectedIndices.isEmpty()) {
+        if (mSelectedIndices == null || mSelectedIndices.isEmpty()) {
             mSelectedIndices = new ArrayList<Integer>();
-            for(int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
+            for (int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
                 mSelectedIndices.add(i);
             }
         }
 
-        for(int index : mSelectedIndices) {
+        for (int index : mSelectedIndices) {
             formats.add(ZXingScannerView.ALL_FORMATS.get(index));
         }
-        if(mScannerView != null) {
+        if (mScannerView != null) {
             mScannerView.setFormats(formats);
         }
     }

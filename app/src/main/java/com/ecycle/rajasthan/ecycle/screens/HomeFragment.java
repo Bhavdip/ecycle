@@ -1,13 +1,10 @@
 package com.ecycle.rajasthan.ecycle.screens;
 
 import android.Manifest;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,59 +18,129 @@ import android.view.ViewGroup;
 
 import com.ecycle.rajasthan.ecycle.R;
 import com.ecycle.rajasthan.ecycle.databinding.FragmentHomeBinding;
-import com.ecycle.rajasthan.ecycle.utils.GeofenceTrasitionService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.kishan.askpermission.AskPermission;
 import com.kishan.askpermission.ErrorCallback;
 import com.kishan.askpermission.PermissionCallback;
 import com.kishan.askpermission.PermissionInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bhavdip on 3/20/18.
  */
 
 public class HomeFragment extends Fragment implements PermissionCallback, ErrorCallback, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnInfoWindowClickListener {
 
     private static final String TAG = HomeFragment.class.getName();
     private static final int REQUEST_PERMISSIONS = 20;
-    private static final long GEO_DURATION = 60 * 60 * 1000;
-    private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 500.0f; // in meters
+    private static final int ZOOM_LEVEL = 17;
     private final int UPDATE_INTERVAL = 1000;
     private final int FASTEST_INTERVAL = 900;
-    private final int GEOFENCE_REQ_CODE = 0;
+
+
     private FragmentHomeBinding mHomeBinding;
     private GoogleMap mGoogleMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
-    private Location lastLocation;
-    private Marker geoFenceMarker;
-    private PendingIntent geoFencePendingIntent;
-    // Draw Geofence circle on GoogleMap
-    private Circle geoFenceLimits;
+    private Location lastKnowLocation;
+    private List<MarkerOptions> optionsList = new ArrayList<>();
+    private List<LatLng> latlanList = new ArrayList<>();
+    private boolean isInDetails;
+    private PolygonOptions mPolygonOptions;
 
-    public static HomeFragment getInstance() {
-        return new HomeFragment();
+    public static HomeFragment getInstance(boolean value) {
+        HomeFragment homeFragment = new HomeFragment();
+        Bundle mBundle = new Bundle();
+        mBundle.putBoolean("details", value);
+        homeFragment.setArguments(mBundle);
+        return homeFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extractBundle();
+        preparePlacesList();
+    }
+
+    private void extractBundle() {
+        if (getArguments().containsKey("details")) {
+            if (getArguments().getBoolean("details")) {
+                isInDetails = true;
+            } else {
+                isInDetails = false;
+            }
+        }
+    }
+
+    private void preparePlacesList() {
+        MapsInitializer.initialize(getContext());
+        if (!isInDetails) {
+            //education
+            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_mortarboard)).position(new LatLng(26.879660, 75.812482)).title("Rajasthan university"));
+            //place
+            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_store)).position(new LatLng(26.9115458, 75.8070547)).title("Hawa Mahal"));
+            //goverment
+            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_govement)).position(new LatLng(26.9047202, 75.797173)).title("Department of Information Technology & Communication"));
+            //palce
+            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_store)).position(new LatLng(26.9534306, 75.8110557)).title("Jal Mahal"));
+            //place
+            optionsList.add(new MarkerOptions().icon(getDescriptor(R.drawable.ic_store)).position(new LatLng(26.8945295, 75.8263396)).title("Raja Park"));
+        } else {
+            mPolygonOptions = new PolygonOptions();
+            latlanList.add(new LatLng(26.891643, 75.814846));
+            latlanList.add(new LatLng(26.891415, 75.814377));
+            latlanList.add(new LatLng(26.884753, 75.812922));
+            latlanList.add(new LatLng(26.880167, 75.819658));
+            latlanList.add(new LatLng(26.880159, 75.819657));
+            latlanList.add(new LatLng(26.880465, 75.821425));
+            latlanList.add(new LatLng(26.882570, 75.824500));
+            latlanList.add(new LatLng(26.884454, 75.825149));
+            latlanList.add(new LatLng(26.885834, 75.826258));
+            latlanList.add(new LatLng(26.885801, 75.826243));
+            latlanList.add(new LatLng(26.886469, 75.827424));
+            latlanList.add(new LatLng(26.889893, 75.819247));
+            latlanList.add(new LatLng(26.890332, 75.817787));
+            latlanList.add(new LatLng(26.891643, 75.814846));
+            mPolygonOptions.strokeColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))
+                    .fillColor(ContextCompat.getColor(getContext(), R.color.colorAqua))
+                    .strokeWidth(2);
+            mPolygonOptions.addAll(latlanList);
+        }
+
+    }
+
+    private BitmapDescriptor getDescriptor(int resourceId) {
+        return BitmapDescriptorFactory.fromResource(resourceId);
+    }
+
+    private void spreadPlaceOnMap() {
+        if (!isInDetails) {
+            for (MarkerOptions item : optionsList) {
+                mGoogleMap.addMarker(item);
+            }
+        } else {
+            mGoogleMap.addPolygon(mPolygonOptions);
+        }
+
     }
 
     @Nullable
@@ -103,7 +170,6 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     public void onPermissionsGranted(int requestCode) {
         initGMaps();
         createGoogleApi();
-
     }
 
     @Override
@@ -130,10 +196,11 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (checkPermission()) {
+            mGoogleMap.setMyLocationEnabled(true);
+        }
+        mGoogleMap.setOnInfoWindowClickListener(this);
+        spreadPlaceOnMap();
     }
 
     private void createGoogleApi() {
@@ -150,14 +217,18 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
     public void onStart() {
         super.onStart();
         // Call GoogleApiClient connection when starting the Activity
-        googleApiClient.connect();
+        if (googleApiClient != null)
+            googleApiClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Disconnect GoogleApiClient when stopping Activity
-        googleApiClient.disconnect();
+        if (googleApiClient != null) {
+            // Disconnect GoogleApiClient when stopping Activity
+            googleApiClient.disconnect();
+        }
+
     }
 
     @Override
@@ -190,25 +261,34 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
         ActivityCompat.requestPermissions(
                 getActivity(),
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                22
+                13
         );
     }
 
     // Get last known location
     private void getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation()");
+        if (lastKnowLocation != null) {
+            LatLng newLatLng = new LatLng(lastKnowLocation.getLatitude(), lastKnowLocation.getLongitude());
+            // Position the map's camera at the location of the marker.
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng,
+                    ZOOM_LEVEL));
+        }
+
         if (checkPermission()) {
-            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (lastLocation != null) {
-                Log.i(TAG, "LasKnown location. " +
-                        "Long: " + lastLocation.getLongitude() +
-                        " | Lat: " + lastLocation.getLatitude());
-                //writeLastLocation();
-                startLocationUpdates();
+            Location nwLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if (nwLocation != null) {
+                if (lastKnowLocation == null) {
+                    lastKnowLocation = nwLocation;
+                    LatLng newLatLng = new LatLng(lastKnowLocation.getLatitude(), lastKnowLocation.getLongitude());
+                    // Position the map's camera at the location of the marker.
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng,
+                            ZOOM_LEVEL));
+                }
             } else {
-                Log.w(TAG, "No location retrieved yet");
                 startLocationUpdates();
             }
+
         } else askPermission();
     }
 
@@ -226,106 +306,17 @@ public class HomeFragment extends Fragment implements PermissionCallback, ErrorC
 
     @Override
     public void onLocationChanged(Location location) {
-        lastLocation = location;
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
-
-    // Create a marker for the geofence creation
-    private void markerForGeofence(LatLng latLng) {
-        Log.i(TAG, "markerForGeofence(" + latLng + ")");
-        String title = latLng.latitude + ", " + latLng.longitude;
-        // Define marker options
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                .title(title);
+        lastKnowLocation = location;
         if (mGoogleMap != null) {
-            // Remove last geoFenceMarker
-            if (geoFenceMarker != null)
-                geoFenceMarker.remove();
-
-            geoFenceMarker = mGoogleMap.addMarker(markerOptions);
+            LatLng newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+            // Position the map's camera at the location of the marker.
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLatLng,
+                    ZOOM_LEVEL));
         }
     }
 
-    // Create a Geofence
-    private Geofence createGeofence(LatLng latLng, float radius) {
-        Log.d(TAG, "createGeofence");
-        return new Geofence.Builder()
-                .setRequestId(GEOFENCE_REQ_ID)
-                .setCircularRegion(latLng.latitude, latLng.longitude, radius)
-                .setExpirationDuration(GEO_DURATION)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER
-                        | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build();
-    }
-
-    private PendingIntent createGeofencePendingIntent() {
-        Log.d(TAG, "createGeofencePendingIntent");
-        if (geoFencePendingIntent != null)
-            return geoFencePendingIntent;
-
-        Intent intent = new Intent(getActivity(), GeofenceTrasitionService.class);
-        return PendingIntent.getService(getActivity(), GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private void drawGeofence() {
-        Log.d(TAG, "drawGeofence()");
-
-        if (geoFenceLimits != null)
-            geoFenceLimits.remove();
-
-        CircleOptions circleOptions = new CircleOptions()
-                .center(geoFenceMarker.getPosition())
-                .strokeColor(Color.argb(50, 70, 70, 70))
-                .fillColor(Color.argb(100, 150, 150, 150))
-                .radius(GEOFENCE_RADIUS);
-        geoFenceLimits = mGoogleMap.addCircle(circleOptions);
-    }
-
-    // Create a Geofence Request
-    private GeofencingRequest createGeofenceRequest(Geofence geofence) {
-        Log.d(TAG, "createGeofenceRequest");
-        return new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                .addGeofence(geofence)
-                .build();
-    }
-
-    // Start Geofence creation process
-    private void startGeofence() {
-        Log.i(TAG, "startGeofence()");
-        if (geoFenceMarker != null) {
-            Geofence geofence = createGeofence(geoFenceMarker.getPosition(), GEOFENCE_RADIUS);
-            GeofencingRequest geofenceRequest = createGeofenceRequest(geofence);
-            addGeofence(geofenceRequest);
-        } else {
-            Log.e(TAG, "Geofence marker is null");
-        }
-    }
-
-    // Add the created GeofenceRequest to the device's monitoring list
-    private void addGeofence(GeofencingRequest request) {
-        Log.d(TAG, "addGeofence");
-        if (checkPermission())
-            LocationServices.GeofencingApi.addGeofences(
-                    googleApiClient,
-                    request,
-                    createGeofencePendingIntent()
-            );
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        DetailsActivity.startDetailsScreen(getActivity());
     }
 }

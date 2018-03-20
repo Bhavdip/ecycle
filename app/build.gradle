@@ -30,10 +30,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.google.android.gms:play-services-maps:11.4.2'
-    //Support Map Fragment
-    implementation 'com.google.android.gms:play-services-maps:11.8.0'
     //Fusion Location API
-    implementation 'com.google.android.gms:play-services-location:11.8.0'
+    implementation 'com.google.android.gms:play-services-location:11.4.2'
 
     implementation('com.kishan.askpermission:askpermission:1.0.3', {
         exclude group: 'com.android.support'
